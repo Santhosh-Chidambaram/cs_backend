@@ -10,7 +10,7 @@ const Matches = require("../models/Matches");
 // @des get all matches
 //access private
 
-router.get("/", async (req, res) => {
+router.get("/",auth, async (req, res) => {
   try {
     const matches_list = await Matches.find().sort({ matchDate: -1 });
     res.json(matches_list);
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 // @des add matche
 //access private
 
-router.post("/", async (req, res) => {
+router.post("/",auth,async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
 // @des add players to team
 //access private
 
-router.post("/players/:team_id", async (req, res) => {
+router.post("/players/:team_id",auth, async (req, res) => {
   console.log(req.body);
   const errors = validationResult(req);
   // if (!errors.isEmpty()) {
@@ -96,7 +96,7 @@ router.post("/players/:team_id", async (req, res) => {
 // @des update players to team
 //access private
 
-router.put("/players/:team_id", async (req, res) => {
+router.put("/players/:team_id",auth, async (req, res) => {
   console.log(req.body);
   const errors = validationResult(req);
   // if (!errors.isEmpty()) {
@@ -134,7 +134,7 @@ router.put("/players/:team_id", async (req, res) => {
 // @des update natches
 //access public
 
-router.put("/:id", async (req, res) => {
+router.put("/:id",auth, async (req, res) => {
   const { _id, isLive, matchDate } = req.body;
   let matchFields = {};
   if (isLive) matchFields.isLive = isLive;
@@ -161,7 +161,7 @@ router.put("/:id", async (req, res) => {
 // @des delete matches
 //access private
 
-router.delete("/player", async (req, res) => {
+router.delete("/player",auth,async (req, res) => {
   const { playerId, teamId } = req.body;
   try {
     let team1 = await Matches.find({
@@ -203,7 +203,7 @@ router.delete("/player", async (req, res) => {
 // @des delete matches
 //access private
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",auth, async (req, res) => {
   try {
     let matchForm = await Matches.findById(req.params.id);
     if (!matchForm) return res.status(401).json({ msg: "Match not found" });

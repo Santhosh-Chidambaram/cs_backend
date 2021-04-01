@@ -16,17 +16,17 @@ router.post(
     check("email", "email is mandatory").isEmail(),
   ],
   async (req, res) => {
-    console.log(req.body);
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, email, password, isAdmin } = req.body;
+    const { name, email, password, isAdmin=false } = req.body;
 
     try {
       let user = await User.findOne({ email });
       if (user) {
-        res.status(400).json({ msg: "user already exists" });
+        res.status(400).json({ msg: "User already exists" });
       }
       user = new User({ name, email, password, isAdmin });
       const salt = await bcrypt.genSalt(10);
