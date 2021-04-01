@@ -1,0 +1,4 @@
+{
+    "mongooseURI":"mongodb://localhost:27017/CircketScoreboard",
+    "jwtSecret" :"secret"
+}
